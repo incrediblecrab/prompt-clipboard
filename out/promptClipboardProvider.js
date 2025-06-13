@@ -392,6 +392,20 @@ class PromptClipboardProvider {
                 }
             }
             
+            // Count trailing empty lines
+            let trailingEmptyLines = 0;
+            for (let i = lines.length - 1; i >= 0; i--) {
+                if (lines[i] === '') {
+                    trailingEmptyLines++;
+                } else {
+                    break;
+                }
+            }
+            
+            // Update spacingAfter field
+            const spacingAfterElement = document.getElementById('spacingAfter');
+            spacingAfterElement.value = Math.min(trailingEmptyLines, 10).toString();
+            
             setTimeout(() => {
                 isUpdatingFromPreview = false;
             }, 50);
@@ -565,6 +579,11 @@ class PromptClipboardProvider {
                 // Ensure there's a newline at the end if not already present
                 if (!template.endsWith('\n')) {
                     template += '\n';
+                }
+                // Add spacing after section based on the spacingAfter value
+                const spacingAfter = Math.max(0, Math.min(section.spacingAfter || 0, 10));
+                if (spacingAfter > 0) {
+                    template += '\n'.repeat(spacingAfter);
                 }
             }
             else {
