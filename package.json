@@ -1,0 +1,101 @@
+{
+  "name": "prompt-clipboard",
+  "displayName": "Prompt Clipboard",
+  "description": "Generate customizable text templates with specific formatting directly into .txt files",
+  "version": "1.0.2",
+  "publisher": "maxs-lab-of-things",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other", "Snippets", "Formatters"],
+  "keywords": ["template", "clipboard", "prompt", "generator", "formatting", "text", "snippets", "auto-numbering", "markdown", "productivity"],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "promptClipboard",
+          "name": "Prompt Clipboard",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "promptClipboard.generateTemplate",
+        "title": "Generate Template",
+        "icon": "$(export)"
+      },
+      {
+        "command": "promptClipboard.addSection",
+        "title": "Add New Section",
+        "icon": "$(add)"
+      },
+      {
+        "command": "promptClipboard.removeSection",
+        "title": "Remove Section",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "promptClipboard.editSection",
+        "title": "Edit Section",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "promptClipboard.duplicateSection",
+        "title": "Duplicate Section",
+        "icon": "$(copy)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "promptClipboard.generateTemplate",
+          "when": "view == promptClipboard",
+          "group": "navigation"
+        },
+        {
+          "command": "promptClipboard.addSection",
+          "when": "view == promptClipboard",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "promptClipboard.editSection",
+          "when": "view == promptClipboard && viewItem == section",
+          "group": "inline@1"
+        },
+        {
+          "command": "promptClipboard.duplicateSection",
+          "when": "view == promptClipboard && viewItem == section",
+          "group": "inline@2"
+        },
+        {
+          "command": "promptClipboard.removeSection",
+          "when": "view == promptClipboard && viewItem == section",
+          "group": "inline@3"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.3",
+    "@vscode/vsce": "^2.22.0"
+  }
+}
