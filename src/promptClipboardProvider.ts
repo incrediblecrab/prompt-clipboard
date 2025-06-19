@@ -23,6 +23,9 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
 
     private lastBaseName: string = 'template';
     private fileCounter: number = 1;
+    private preferredFormat: 'txt' | 'md' = 'txt';
+    private txtFileCounter: number = 1;
+    private mdFileCounter: number = 1;
 
     constructor(private context: vscode.ExtensionContext) {
         this.loadSections();
@@ -95,6 +98,9 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
         const savedSections = this.context.workspaceState.get<Section[]>(`${workspaceKey}.promptClipboardSections`);
         const savedBaseName = this.context.workspaceState.get<string>(`${workspaceKey}.lastBaseName`);
         const savedCounter = this.context.workspaceState.get<number>(`${workspaceKey}.fileCounter`);
+        const savedPreferredFormat = this.context.workspaceState.get<'txt' | 'md'>(`${workspaceKey}.preferredFormat`);
+        const savedTxtCounter = this.context.workspaceState.get<number>(`${workspaceKey}.txtFileCounter`);
+        const savedMdCounter = this.context.workspaceState.get<number>(`${workspaceKey}.mdFileCounter`);
         
         if (savedSections && savedSections.length > 0) {
             this.sections = savedSections;
@@ -107,6 +113,18 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
         if (savedCounter) {
             this.fileCounter = savedCounter;
         }
+        
+        if (savedPreferredFormat) {
+            this.preferredFormat = savedPreferredFormat;
+        }
+        
+        if (savedTxtCounter) {
+            this.txtFileCounter = savedTxtCounter;
+        }
+        
+        if (savedMdCounter) {
+            this.mdFileCounter = savedMdCounter;
+        }
     }
 
     private saveSections(): void {
@@ -118,6 +136,9 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
         this.context.workspaceState.update(`${workspaceKey}.promptClipboardSections`, this.sections);
         this.context.workspaceState.update(`${workspaceKey}.lastBaseName`, this.lastBaseName);
         this.context.workspaceState.update(`${workspaceKey}.fileCounter`, this.fileCounter);
+        this.context.workspaceState.update(`${workspaceKey}.preferredFormat`, this.preferredFormat);
+        this.context.workspaceState.update(`${workspaceKey}.txtFileCounter`, this.txtFileCounter);
+        this.context.workspaceState.update(`${workspaceKey}.mdFileCounter`, this.mdFileCounter);
     }
 
     getTreeItem(element: SectionItem): vscode.TreeItem {
@@ -517,15 +538,35 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
                 return;
             }
 
-            // First, ask for naming preference
+            // First, ask for format preference
+            const formatOptions = [
+                { label: 'Plain Text (.txt)', description: 'Universal compatibility' },
+                { label: 'Markdown (.md)', description: 'Rich formatting and preview' }
+            ];
+
+            const formatChoice = await vscode.window.showQuickPick(formatOptions, {
+                placeHolder: 'Select template format:'
+            });
+
+            if (!formatChoice) {
+                return; // User cancelled
+            }
+
+            const selectedFormat: 'txt' | 'md' = formatChoice.label.includes('.txt') ? 'txt' : 'md';
+            this.preferredFormat = selectedFormat;
+
+            // Get format-specific counter
+            const currentCounter = selectedFormat === 'txt' ? this.txtFileCounter : this.mdFileCounter;
+
+            // Then, ask for naming preference
             const namingOptions = [
-                { label: 'Custom name', description: 'Enter a specific filename' },
-                { label: 'Auto-number', description: `Use ${this.lastBaseName}-${this.fileCounter}.txt` },
+                { label: 'Custom name', description: `Enter a specific filename (.${selectedFormat})` },
+                { label: 'Auto-number', description: `Use ${this.lastBaseName}-${currentCounter}.${selectedFormat}` },
                 { label: 'New base name + auto-number', description: 'Set new base name and start numbering' }
             ];
 
             const choice = await vscode.window.showQuickPick(namingOptions, {
-                placeHolder: 'How would you like to name this template?'
+                placeHolder: `How would you like to name this ${selectedFormat.toUpperCase()} template?`
             });
 
             if (!choice) {
@@ -537,7 +578,7 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
             switch (choice.label) {
                 case 'Custom name':
                     const customName = await vscode.window.showInputBox({
-                        prompt: 'Enter filename for your template',
+                        prompt: `Enter filename for your ${selectedFormat.toUpperCase()} template`,
                         placeHolder: 'e.g., prompt, notes, planning',
                         value: this.lastBaseName,
                         validateInput: (value) => {
@@ -555,17 +596,26 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
                         return; // User cancelled
                     }
 
-                    finalFilename = customName.endsWith('.txt') ? customName : `${customName}.txt`;
-                    // Reset counter if using a different base name
-                    if (customName !== this.lastBaseName) {
-                        this.lastBaseName = customName.replace('.txt', '');
+                    const cleanName = customName.replace(/\.(txt|md)$/, '');
+                    finalFilename = `${cleanName}.${selectedFormat}`;
+                    // Reset counters if using a different base name
+                    if (cleanName !== this.lastBaseName) {
+                        this.lastBaseName = cleanName;
+                        this.txtFileCounter = 1;
+                        this.mdFileCounter = 1;
                         this.fileCounter = 1;
                     }
                     break;
 
                 case 'Auto-number':
-                    finalFilename = `${this.lastBaseName}-${this.fileCounter}.txt`;
-                    this.fileCounter++;
+                    const counter = selectedFormat === 'txt' ? this.txtFileCounter : this.mdFileCounter;
+                    finalFilename = `${this.lastBaseName}-${counter}.${selectedFormat}`;
+                    if (selectedFormat === 'txt') {
+                        this.txtFileCounter++;
+                    } else {
+                        this.mdFileCounter++;
+                    }
+                    this.fileCounter = Math.max(this.txtFileCounter, this.mdFileCounter);
                     this.saveSections(); // Save updated counter
                     break;
 
@@ -589,10 +639,17 @@ export class PromptClipboardProvider implements vscode.TreeDataProvider<SectionI
                         return; // User cancelled
                     }
 
-                    this.lastBaseName = baseName.replace('.txt', '');
+                    const cleanBaseName = baseName.replace(/\.(txt|md)$/, '');
+                    this.lastBaseName = cleanBaseName;
+                    this.txtFileCounter = 1;
+                    this.mdFileCounter = 1;
                     this.fileCounter = 1;
-                    finalFilename = `${this.lastBaseName}-${this.fileCounter}.txt`;
-                    this.fileCounter++;
+                    finalFilename = `${this.lastBaseName}-1.${selectedFormat}`;
+                    if (selectedFormat === 'txt') {
+                        this.txtFileCounter++;
+                    } else {
+                        this.mdFileCounter++;
+                    }
                     this.saveSections(); // Save updated base name and counter
                     break;
 
