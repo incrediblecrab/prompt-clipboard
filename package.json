@@ -2,7 +2,7 @@
   "name": "prompt-clipboard",
   "displayName": "Prompt Clipboard",
   "description": "Generate customizable text templates with specific formatting directly into .txt files",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "publisher": "maxs-lab-of-things",
   "license": "MIT",
   "engines": {
