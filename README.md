@@ -89,10 +89,10 @@ Initial release of Prompt Clipboard:
 - Customizable formatting options
 - Duplicate and edit functionality
 
-## Contributing
+## Author
 
-Found a bug or have a feature request? Please reach out via the VS Code marketplace or visit mlot.ai.
+Max Marquardt | [mlot.ai](https://mlot.ai)
 
 ## License
 
-This extension is licensed under the MIT License.
+MIT
