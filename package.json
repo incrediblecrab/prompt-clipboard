@@ -2,7 +2,7 @@
   "name": "prompt-clipboard",
   "displayName": "Prompt Clipboard",
   "description": "Generate customizable text templates with specific formatting directly into .txt files",
-  "version": "1.1.0",
+  "version": "1.5.0",
   "publisher": "maxs-lab-of-things",
   "author": {
     "name": "Max Marquardt",
@@ -13,8 +13,23 @@
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": ["Other", "Snippets", "Formatters"],
-  "keywords": ["template", "clipboard", "prompt", "generator", "formatting", "text", "snippets", "auto-numbering", "markdown", "productivity"],
+  "categories": [
+    "Other",
+    "Snippets",
+    "Formatters"
+  ],
+  "keywords": [
+    "template",
+    "clipboard",
+    "prompt",
+    "generator",
+    "formatting",
+    "text",
+    "snippets",
+    "auto-numbering",
+    "markdown",
+    "productivity"
+  ],
   "icon": "icon.png",
   "galleryBanner": {
     "color": "#1e1e1e",

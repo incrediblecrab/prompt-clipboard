@@ -1,6 +1,11 @@
 # Prompt Clipboard
 
+![Version](https://img.shields.io/visual-studio-marketplace/v/maxs-lab-of-things.prompt-clipboard)
+![MLoT](https://img.shields.io/badge/MLoT-ai-blue)
+
 Generate customizable text templates with specific formatting directly into .txt files for immediate editing.
+
+![Demo](https://raw.githubusercontent.com/incrediblecrab/Packages-and-Extensions-Media/main/prompt-clipboard.gif)
 
 ## Features
 
@@ -89,9 +94,16 @@ Initial release of Prompt Clipboard:
 - Customizable formatting options
 - Duplicate and edit functionality
 
-## Author
+## Resources
 
-Max Marquardt | [mlot.ai](https://mlot.ai)
+- 📺 [Watch Demo Video](https://youtu.be/ULVsHrORzHA)
+- 🌐 [Visit MLoT Page](https://mlot.ai/prompt-clipboard/)
+- 🔒 [Privacy Policy](https://mlot.ai/privacy)
+
+## Publisher
+
+**Max's Lab of Things**
+Visit [mlot.ai](https://mlot.ai/)
 
 ## License
 
