@@ -14,3 +14,18 @@ desktop.ini
 .env
 .env.local
 .env.*.local
+
+# dependencies
+node_modules/
+
+# --- project-specific (auto-added 2026-08-04) ---
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+.npm/
+dist/
+.vscode-test/
+build/
+.cache/
+coverage/
