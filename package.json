@@ -117,5 +117,12 @@
     "@types/node": "16.x",
     "typescript": "^4.9.3",
     "@vscode/vsce": "^2.22.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/incrediblecrab/prompt-clipboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/incrediblecrab/prompt-clipboard/issues"
   }
 }
