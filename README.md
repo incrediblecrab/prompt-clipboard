@@ -5,7 +5,7 @@
 
 Generate customizable text templates with specific formatting directly into .txt files for immediate editing.
 
-![Demo](https://raw.githubusercontent.com/incrediblecrab/Packages-and-Extensions-Media/main/prompt-clipboard.gif)
+![Demo](https://raw.githubusercontent.com/incrediblecrab/Packages-and-Extensions-Media/main/gifs/prompt-clipboard.gif)
 
 ## Features
 
