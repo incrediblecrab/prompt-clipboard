@@ -1,110 +1,67 @@
-# Prompt Clipboard
+# prompt-clipboard
 
-![Version](https://img.shields.io/visual-studio-marketplace/v/maxs-lab-of-things.prompt-clipboard)
-![MLoT](https://img.shields.io/badge/MLoT-ai-blue)
+![Version](https://img.shields.io/visual-studio-marketplace/v/maxs-lab-of-things.prompt-clipboard) ![MLoT](https://img.shields.io/badge/MLoT-ai-blue)
 
-Generate customizable text templates with specific formatting directly into .txt files for immediate editing.
+Prompt Clipboard is a VS Code extension for generating reusable prompt template files from workspace-specific sections. It is published on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=maxs-lab-of-things.prompt-clipboard) as `maxs-lab-of-things.prompt-clipboard`; the published version is 1.5.1, matching this repository.
 
 ![Demo](https://raw.githubusercontent.com/incrediblecrab/mlot-developer-media/main/gifs/prompt-clipboard.gif)
 
-## Features
+**Objective:** make it quick to create consistently formatted `.txt` or `.md` prompt drafts without keeping a separate template file open.
 
-- **📋 Sidebar Integration**: Access from the Explorer sidebar alongside your file tree
-- **🎯 Direct File Creation**: Generate templates directly into .txt files and start editing immediately
-- **🔧 Flexible Formatting**: Customize each section with:
-  - Custom titles and prefixes/suffixes (e.g., `**Title**`, `##Title##`)
-  - Adjustable indentation (0-20 spaces)
-  - Multiple bullet styles (-, •, *, +, ○, ▪, ▸)
-  - Variable spacing between sections
-- **📝 Interactive Management**: Add, edit, duplicate, and remove sections with inline buttons
-- **🎨 Visual Editor**: Side-panel editor with live preview for all section properties
-- **🔢 Auto-Numbering**: Generate sequential files (prompt-1.txt, prompt-2.txt) with custom base names
-- **⚡ No Copy-Paste Needed**: Templates are created as files you can immediately start typing in
+**Inputs:** VS Code 1.74.0 or later and an open workspace folder. The extension stores sections and file-numbering choices in VS Code workspace state keyed to the first workspace folder.
 
-## Installation
+**Files:**
 
-1. Install from the VS Code Marketplace
-2. The "Prompt Clipboard" panel will appear in your Explorer sidebar
+- [`src/`](src/): the TypeScript extension source, tree view provider and section editor webview
+- [`out/`](out/): compiled JavaScript used by the extension entry point
+- [`package.json`](package.json): extension metadata, commands, view contributions and npm scripts
+- [`CHANGELOG.md`](CHANGELOG.md): release history
+- [`icon.png`](icon.png): Marketplace icon
+- [`tsconfig.json`](tsconfig.json): TypeScript compiler settings
+
+**Try it:** install the published build with `ext install maxs-lab-of-things.prompt-clipboard`. For local development, run `npm install`, then `npm run compile`, and launch the extension host from VS Code.
 
 ## Usage
 
-### Getting Started
-1. Open VS Code with a workspace folder
-2. Look for "Prompt Clipboard" in the Explorer sidebar
-3. You'll see a default "Vision" section to start with
+Open a workspace folder, then open the "Prompt Clipboard" view in Explorer. A new workspace starts with one "Vision" section.
 
-### Managing Sections
-- **Add Section**: Click the "+" button in the panel toolbar
-- **Edit Section**: Click the ✏️ edit icon on any section to open the visual editor with:
-  - Title editing
-  - Prefix/suffix formatting
-  - Content placeholder toggle
-  - Indent size and bullet style selection
-  - Spacing configuration
-  - Live preview of output
-- **Duplicate Section**: Click the 📋 duplicate icon to copy a section
-- **Remove Section**: Click the 🗑️ remove icon (minimum 1 section required)
+Use the toolbar to generate a template or add a section. Use a section's inline actions to edit, duplicate or remove it. Sections can also be dragged inside the Prompt Clipboard tree to reorder the generated output.
 
-### Generating Templates
-1. Configure your sections as desired
-2. Click the "📤 Generate Template" button in the toolbar
-3. Choose your naming option:
-   - **Custom name**: Enter any filename
-   - **Auto-number**: Use sequential numbering (e.g., template-1.txt, template-2.txt)
-   - **New base name**: Set a new base name and start numbering
-4. The file is created and opens immediately for editing
+The section editor controls the title, title prefix, title suffix, whether to include a bullet placeholder, indentation from 0 to 20 spaces, bullet style and empty lines after the section. The preview can be edited directly; a custom preview is saved with the section when it is not empty.
 
-## Example Output
+When generating a template, choose plain text or Markdown, then choose a custom file name, the next auto-numbered name or a new base name. The file is written to the first workspace folder and opened for editing. If the target file already exists, the extension asks before overwriting it.
 
-```
-**Vision**
-- 
+## Commands
 
-##Implementation##
-    • 
+| Command | Title | Where it appears |
+| --- | --- | --- |
+| `promptClipboard.generateTemplate` | Generate Template | Prompt Clipboard view title |
+| `promptClipboard.addSection` | Add New Section | Prompt Clipboard view title |
+| `promptClipboard.editSection` | Edit Section | Section inline menu |
+| `promptClipboard.duplicateSection` | Duplicate Section | Section inline menu |
+| `promptClipboard.removeSection` | Remove Section | Section inline menu |
 
-Details
-+ 
-```
+## Settings
 
-## Requirements
+Prompt Clipboard does not contribute VS Code settings.
 
-- VS Code version 1.74.0 or higher
-- An open workspace folder (for file creation)
+## Development
 
-## Extension Settings
+- `npm run compile`: compile TypeScript with `tsc -p ./`
+- `npm run watch`: compile in watch mode
+- `npm run package`: create a VSIX with `vsce package`
+- `npm run publish`: publish with `vsce publish`
 
-This extension currently has no configurable settings.
+Do not publish from this repository unless the package metadata and Marketplace release are intentionally being updated.
 
-## Known Issues
+## Links
 
-None currently known. Please report any issues via the VS Code marketplace.
-
-## Release Notes
-
-### 1.0.0
-
-Initial release of Prompt Clipboard:
-- Sidebar panel integration
-- Interactive section management with inline buttons
-- Visual editor with live preview
-- Auto-numbering for rapid template generation
-- State persistence (sections and settings saved between sessions)
-- Direct .txt file generation and opening
-- Customizable formatting options
-- Duplicate and edit functionality
-
-## Resources
-
-- 📺 [Watch Demo Video](https://youtu.be/ULVsHrORzHA)
-- 🌐 [Visit MLoT Page](https://mlot.ai/prompt-clipboard/)
-- 🔒 [Privacy Policy](https://mlot.ai/privacy)
-
-## Publisher
-
-**Max's Lab of Things**
-Visit [mlot.ai](https://mlot.ai/)
+- [Marketplace listing](https://marketplace.visualstudio.com/items?itemName=maxs-lab-of-things.prompt-clipboard)
+- [Demo video](https://youtu.be/ULVsHrORzHA)
+- [MLoT product page](https://mlot.ai/prompt-clipboard/)
+- [Privacy policy](https://mlot.ai/privacy/)
+- Publisher: [Max's Lab of Things](https://mlot.ai/)
 
 ## License
 
-MIT
+MIT. See [`LICENSE`](LICENSE).
